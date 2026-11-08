@@ -75,11 +75,11 @@ const game = (() => {
 
     // check for victory after every turn
     function checkWinState () {
-        console.log({gameBoard});
+        console.log(`checking victory on board with state: ${gameBoard.board}`);
     }
     
     function gameIsOver () {
-        if (gameLength => 9) {
+        if (gameLength >= 9) {
             return true
         }
         return false;
@@ -90,10 +90,12 @@ const game = (() => {
         do {
             console.log(`It's ${players[currentPlayerTurn - 1].name}'s turn!`);
             // play a turn
-            
+            playTurn(prompt('row'), prompt('column'));
+
             // check for victory
         } while (!gameIsOver());
 
+        console.log(gameBoard.board);
         // announce the winner!!!
     }
 
