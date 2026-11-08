@@ -20,3 +20,10 @@ const gameBoard = (() => {
 
     return {board};
 })();
+
+function newPlayer (name, marker) {
+    return {name, marker}
+}
+
+const player1 = newPlayer("Player One", "X");
+const player2 = newPlayer("Player Two", "O");
