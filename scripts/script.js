@@ -43,12 +43,12 @@ const game = (() => {
 
     // check whose turn it is
     function checkTurn () {
-        console.log({currentPlayerTurn});
+        return currentPlayerTurn - 1;
     }
 
     // allow the current player to place a mark
     function placeMark (mark, row, column) {
-        // correct row and column to math 0 indices
+        // correct row and column to match 0 indices
         row--;
         column--;
 
@@ -63,16 +63,40 @@ const game = (() => {
         console.log(gameBoard.board);
     }
 
+    function playTurn (row, column) {
+        const currentPlayer = players[checkTurn()];
+        const mark = currentPlayer.marker;
+
+        placeMark(mark, row, column);
+
+        currentPlayerTurn = currentPlayerTurn === 1 ? 2 : 1;
+        gameLength++;
+    }
+
     // check for victory after every turn
-    function checkWinState() {
+    function checkWinState () {
         console.log({gameBoard});
+    }
+    
+    function gameIsOver () {
+        if (gameLength => 9) {
+            return true
+        }
+        return false;
     }
 
     // START GAME
     function start () {
+        do {
+            console.log(`It's ${players[currentPlayerTurn - 1].name}'s turn!`);
+            // play a turn
+            
+            // check for victory
+        } while (!gameIsOver());
 
+        // announce the winner!!!
     }
 
     // return the game flow as an object
-    return {start, checkTurn, placeMark, checkWinState}
+    return {start, playTurn}
 })();
