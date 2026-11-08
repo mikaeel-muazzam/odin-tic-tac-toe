@@ -40,6 +40,7 @@ const game = (() => {
     // pvt variables
     let gameLength = 0;
     let currentPlayerTurn = 1;
+    let winner;
 
     // check whose turn it is
     function checkTurn () {
@@ -79,9 +80,8 @@ const game = (() => {
     }
     
     function gameIsOver () {
-        if (gameLength >= 9) {
-            return true
-        }
+        if (gameLength >= 9) return true;
+        if (checkWinState()) return true;
         return false;
     }
 
@@ -95,7 +95,6 @@ const game = (() => {
             // check for victory
         } while (!gameIsOver());
 
-        console.log(gameBoard.board);
         // announce the winner!!!
     }
 
