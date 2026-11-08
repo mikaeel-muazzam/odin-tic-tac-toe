@@ -21,9 +21,44 @@ const gameBoard = (() => {
     return {board};
 })();
 
-function newPlayer (name, marker) {
-    return {name, marker}
+function newPlayer (playerNumber, name, marker) {
+    return {playerNumber, name, marker}
 }
 
-const player1 = newPlayer("Player One", "X");
-const player2 = newPlayer("Player Two", "O");
+// create the two players
+const players = (() => {
+    const player1 = newPlayer(1, 'John', "X");
+    const player2 = newPlayer(2, 'Alex', "O");
+
+    return [player1, player2];
+})();
+
+const game = (() => {
+    // pvt variables
+    let gameLength = 0;
+    let currentPlayerTurn = 1;
+
+    // check whose turn it is
+    function checkTurn () {
+        console.log({currentPlayerTurn});
+    }
+
+    // allow the current player to place a mark
+    function placeMark (mark, row, column) {
+        console.log({mark, row, column});
+        console.log(gameBoard);
+    }
+
+    // check for victory after every turn
+    function checkWinState() {
+        console.log({gameBoard});
+    }
+
+    // START GAME
+    function start () {
+
+    }
+
+    // return the game flow as an object
+    return {start, checkTurn, placeMark, checkWinState}
+})();
