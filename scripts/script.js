@@ -167,15 +167,16 @@ const display = (() => {
 
     function showBoardCells () {
         const board = gameBoard.viewBoard();
-        console.log(board);
+        console.log('rendering', board);
 
         container.replaceChildren();;
 
         board.forEach(row => {
             row.forEach(cell => {
-                console.log({cell})
                 const btn = document.createElement("button");
-                btn.textContent = cell;
+
+                btn.textContent = (cell !== 0) ? cell : "";
+
                 container.appendChild(btn);
             })
         })
@@ -183,3 +184,6 @@ const display = (() => {
 
     return {showBoardCells};
 })();
+
+//quickstart
+display.showBoardCells();

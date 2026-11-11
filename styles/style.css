@@ -9,13 +9,16 @@
 }
 
 .ttt-container {
+    width: min-content;
+    margin: auto;
+
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    place-content: center;
-    place-items: center;
+    gap: 1rem;
 }
 
 .ttt-container button {
     height: 60px;
     width: 60px;
+    font-size: 200%;
 }
