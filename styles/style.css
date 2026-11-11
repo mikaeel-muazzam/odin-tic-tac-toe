@@ -7,3 +7,15 @@
     padding: 0px;
     margin: 0px;
 }
+
+.ttt-container {
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    place-content: center;
+    place-items: center;
+}
+
+.ttt-container button {
+    height: 60px;
+    width: 60px;
+}

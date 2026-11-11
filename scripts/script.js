@@ -160,3 +160,24 @@ const game = (() => {
     // return the game flow as an object
     return {start}
 })();
+
+const display = (() => {
+    const container = document.querySelector(".ttt-container");
+
+    function showBoardCells () {
+        const board = gameBoard.viewBoard();
+        console.log(board);
+
+
+        board.forEach(row => {
+            row.forEach(cell => {
+                console.log({cell})
+                const btn = document.createElement("button");
+                btn.textContent = cell;
+                container.appendChild(btn);
+            })
+        })
+    }
+
+    return {showBoardCells};
+})();
