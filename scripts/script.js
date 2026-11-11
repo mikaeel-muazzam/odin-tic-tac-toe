@@ -2,7 +2,6 @@ console.log("Hello world");
 
 // create the (blank) gameboard
 const gameBoard = (() => {
-    let board = [];
     function generateEmptyBoard () {
         const rows = columns = 3;
         let board = [];
@@ -42,6 +41,8 @@ const gameBoard = (() => {
         board[row][column] = mark;
         console.log(board);
     }
+
+    let board = generateEmptyBoard();
 
     return {viewBoard, placeMark, resetBoard};
 })();
@@ -168,6 +169,7 @@ const display = (() => {
         const board = gameBoard.viewBoard();
         console.log(board);
 
+        container.replaceChildren();;
 
         board.forEach(row => {
             row.forEach(cell => {
