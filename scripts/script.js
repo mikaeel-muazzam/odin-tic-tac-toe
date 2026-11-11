@@ -77,13 +77,56 @@ const game = (() => {
     }
 
     // check for victory after every turn
-    function checkWinState () {
-        console.log(`checking victory on board with state: ${gameBoard.viewBoard()}`);
+    function checkWinState (boardArray) {
+        let didSomeoneWin;
+
+        //gameboard flattener
+        function flatten (arr) {
+            let flatArr = [];
+            arr.forEach(row => {
+                row.forEach(cell => {
+                    flatArr.push(cell);
+                })
+            });
+            return flatArr;
+        }
+
+        //check if 3 spots have the same mark which isn't 0;
+        function check(arr, spots) {
+            let [a, b, c] = spots;
+
+            if (arr[a] === 0 || arr[b] === 0 || arr[c] === 0) return false;
+            if (arr[a] === arr[b] && arr[b] === arr[c]) return true;
+        }
+
+        console.log(`checking victory on board with state: ${boardArray}`);
+
+        boardArray = flatten(boardArray); 
+
+        const winPositions = [
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ]
+
+        winPositions.forEach(position => {
+            if (check(boardArray, position)) didSomeoneWin = true;
+        });
+
+        return didSomeoneWin;
     }
     
     function gameIsOver () {
         if (gameLength >= 9) return true;
-        if (checkWinState()) return true;
+        if (checkWinState(gameBoard.viewBoard())) {
+            winner = true;
+            return true;
+        }
         return false;
     }
 
@@ -98,8 +141,13 @@ const game = (() => {
         } while (!gameIsOver());
 
         // announce the winner!!!
+        if (winner) {
+            console.log(`winner is ${players[checkTurn()-1].name} (${players[checkTurn()-1].marker})!`)
+        } else {
+            console.log(`tie!`)
+        }
     }
 
     // return the game flow as an object
-    return {start, playTurn}
+    return {start, playTurn, gameIsOver, checkWinState}
 })();
