@@ -171,15 +171,20 @@ const display = (() => {
 
         container.replaceChildren();;
 
-        board.forEach(row => {
-            row.forEach(cell => {
+        board.forEach((row, i) => {
+            row.forEach((cell, j) => {
                 const btn = document.createElement("button");
+
+                btn.dataset.row = i + 1;
+                btn.dataset.column = j + 1;
 
                 btn.textContent = (cell !== 0) ? cell : "";
 
+                btn.className = "ttt-btn";
+
                 container.appendChild(btn);
-            })
-        })
+            });
+        });
     }
 
     return {showBoardCells};
