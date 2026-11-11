@@ -2,7 +2,7 @@ console.log("Hello world");
 
 // create the (blank) gameboard
 const gameBoard = (() => {
-    function generateBoard () {
+    const board = (function () {
         const rows = columns = 3;
         let board = [];
 
@@ -15,11 +15,30 @@ const gameBoard = (() => {
         }
 
         return board;
-    }
+    })();
     
-    board = generateBoard();
+    function viewBoard () {
+        return board;
+    }
 
-    return {board};
+    // allow the current player to place a mark
+    function placeMark (mark, row, column) {
+        // correct row and column to match 0 indices
+        row--;
+        column--;
+
+        // check if such a mark already exists
+        if (board[row][column] === mark) {
+            row++;
+            column++;
+            throw Error(`${mark} already exists at row ${row}, column ${column}`)
+        }
+
+        board[row][column] = mark;
+        console.log(board);
+    }
+
+    return {viewBoard, placeMark};
 })();
 
 
@@ -47,28 +66,11 @@ const game = (() => {
         return currentPlayerTurn - 1;
     }
 
-    // allow the current player to place a mark
-    function placeMark (mark, row, column) {
-        // correct row and column to match 0 indices
-        row--;
-        column--;
-
-        // check if such a mark already exists
-        if (gameBoard.board[row][column] === mark) {
-            row++;
-            column++;
-            throw Error(`${mark} already exists at row ${row}, column ${column}`)
-        }
-
-        gameBoard.board[row][column] = mark;
-        console.log(gameBoard.board);
-    }
-
     function playTurn (row, column) {
         const currentPlayer = players[checkTurn()];
         const mark = currentPlayer.marker;
 
-        placeMark(mark, row, column);
+        gameBoard.placeMark(mark, row, column);
 
         currentPlayerTurn = currentPlayerTurn === 1 ? 2 : 1;
         gameLength++;
@@ -76,7 +78,7 @@ const game = (() => {
 
     // check for victory after every turn
     function checkWinState () {
-        console.log(`checking victory on board with state: ${gameBoard.board}`);
+        console.log(`checking victory on board with state: ${gameBoard.viewBoard()}`);
     }
     
     function gameIsOver () {
