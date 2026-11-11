@@ -2,7 +2,8 @@ console.log("Hello world");
 
 // create the (blank) gameboard
 const gameBoard = (() => {
-    const board = (function () {
+    let board = [];
+    function generateEmptyBoard () {
         const rows = columns = 3;
         let board = [];
 
@@ -15,7 +16,11 @@ const gameBoard = (() => {
         }
 
         return board;
-    })();
+    };
+
+    function resetBoard () {
+        board = generateEmptyBoard();
+    }
     
     function viewBoard () {
         return board;
@@ -38,7 +43,7 @@ const gameBoard = (() => {
         console.log(board);
     }
 
-    return {viewBoard, placeMark};
+    return {viewBoard, placeMark, resetBoard};
 })();
 
 
@@ -78,8 +83,7 @@ const game = (() => {
 
     // check for victory after every turn
     function checkWinState (boardArray) {
-        let didSomeoneWin;
-
+        console.log(`checking victory on board with state: ${boardArray}`);
         //gameboard flattener
         function flatten (arr) {
             let flatArr = [];
@@ -99,10 +103,8 @@ const game = (() => {
             if (arr[a] === arr[b] && arr[b] === arr[c]) return true;
         }
 
-        console.log(`checking victory on board with state: ${boardArray}`);
-
-        boardArray = flatten(boardArray); 
-
+        let didSomeoneWin;
+        //all possible win positons
         const winPositions = [
             [0, 3, 6],
             [1, 4, 7],
@@ -112,8 +114,11 @@ const game = (() => {
             [6, 7, 8],
             [0, 4, 8],
             [2, 4, 6]
-        ]
+        ];
 
+        boardArray = flatten(boardArray);
+
+        //iterate over every possible win position
         winPositions.forEach(position => {
             if (check(boardArray, position)) didSomeoneWin = true;
         });
@@ -132,22 +137,26 @@ const game = (() => {
 
     // START GAME
     function start () {
+        //reset the board
+        gameBoard.resetBoard();
+
+        //core game loop
         do {
             console.log(`It's ${players[currentPlayerTurn - 1].name}'s turn!`);
             // play a turn
             playTurn(prompt('row'), prompt('column'));
 
-            // check for victory
+            // check if game is over
         } while (!gameIsOver());
 
         // announce the winner!!!
         if (winner) {
-            console.log(`winner is ${players[checkTurn()-1].name} (${players[checkTurn()-1].marker})!`)
+            console.log(`The winner is ${players[checkTurn()-1].name} (${players[checkTurn()-1].marker})!`)
         } else {
-            console.log(`tie!`)
+            console.log(`It's a tie!`)
         }
     }
 
     // return the game flow as an object
-    return {start, playTurn, gameIsOver, checkWinState}
+    return {start}
 })();
