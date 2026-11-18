@@ -8,6 +8,14 @@
     margin: 0px;
 }
 
+body {
+    padding: 1rem;
+}
+
+form li {
+    list-style-type: none;
+}
+
 .ttt-container {
     width: min-content;
     margin: auto;

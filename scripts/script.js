@@ -62,6 +62,7 @@ const game = (() => {
     // pvt variables
     let currentPlayerTurn = 1;
     let winner;
+    let currentPlayer;
 
     // check whose turn it is
     function checkTurn () {
@@ -71,7 +72,7 @@ const game = (() => {
     function playTurn (row, column) {
         if (winner) return;
 
-        const currentPlayer = players[checkTurn()];
+        currentPlayer = players[checkTurn()];
         const mark = currentPlayer.marker;
 
         console.log(`It's ${currentPlayer.name}'s turn!`);
@@ -140,7 +141,7 @@ const game = (() => {
     function announceWinner () {
         // announce the winner!!!
         if (winner) {
-            console.log(`The winner is ${players[checkTurn()+1].name} (${players[checkTurn()+1].marker})!`)
+            console.log(`The winner is ${currentPlayer.name} (${currentPlayer.marker})!`)
         } else {
             console.log(`It's a tie!`)
         }
@@ -155,6 +156,9 @@ const game = (() => {
 
 const display = (() => {
     const container = document.querySelector(".ttt-container");
+    const start = document.querySelector("#startGame");
+
+    start.addEventListener("submit", startHandler)
 
     function showBoardCells () {
         const board = gameBoard.viewBoard();
@@ -185,6 +189,14 @@ const display = (() => {
         game.playTurn(row, column);
 
         showBoardCells();
+    }
+
+    function startHandler (ev) {
+        ev.preventDefault();
+        const data = new FormData(ev.target);
+        gameBoard.resetBoard();
+        players[0].name = data.get("playerOne");
+        players[1].name = data.get("playerTwo");
     }
 
     return {showBoardCells};
