@@ -63,7 +63,6 @@ const players = (() => {
 
 const game = (() => {
     // pvt variables
-    let gameLength = 0;
     let currentPlayerTurn = 1;
     let winner;
 
@@ -73,13 +72,20 @@ const game = (() => {
     }
 
     function playTurn (row, column) {
+        if (winner) return;
+
         const currentPlayer = players[checkTurn()];
         const mark = currentPlayer.marker;
+
+        console.log(`It's ${currentPlayer.name}'s turn!`);
 
         gameBoard.placeMark(mark, row, column);
 
         currentPlayerTurn = currentPlayerTurn === 1 ? 2 : 1;
-        gameLength++;
+
+        if (gameIsOver()) {
+            announceWinner();
+        }
     }
 
     // check for victory after every turn
@@ -128,7 +134,6 @@ const game = (() => {
     }
     
     function gameIsOver () {
-        if (gameLength >= 9) return true;
         if (checkWinState(gameBoard.viewBoard())) {
             winner = true;
             return true;
@@ -136,20 +141,7 @@ const game = (() => {
         return false;
     }
 
-    // START GAME
-    function start () {
-        //reset the board
-        gameBoard.resetBoard();
-
-        //core game loop
-        do {
-            console.log(`It's ${players[currentPlayerTurn - 1].name}'s turn!`);
-            // play a turn
-            playTurn(prompt('row'), prompt('column'));
-
-            // check if game is over
-        } while (!gameIsOver());
-
+    function announceWinner () {
         // announce the winner!!!
         if (winner) {
             console.log(`The winner is ${players[checkTurn()-1].name} (${players[checkTurn()-1].marker})!`)
@@ -158,8 +150,11 @@ const game = (() => {
         }
     }
 
+    // START GAME (reset the board)
+    gameBoard.resetBoard();
+
     // return the game flow as an object
-    return {start}
+    return {playTurn}
 })();
 
 const display = (() => {
