@@ -147,11 +147,18 @@ const game = (() => {
         }
     }
 
-    // START GAME (reset the board)
-    gameBoard.resetBoard();
+    // reset
+    function resetGame () {
+        gameBoard.resetBoard();
+        display.showBoardCells();
+
+        currentPlayerTurn = 1;
+        winner = undefined;
+        currentPlayer = undefined;
+    }
 
     // return the game flow as an object
-    return {playTurn}
+    return {playTurn, resetGame}
 })();
 
 const display = (() => {
@@ -194,7 +201,9 @@ const display = (() => {
     function startHandler (ev) {
         ev.preventDefault();
         const data = new FormData(ev.target);
-        gameBoard.resetBoard();
+
+        game.resetGame();
+
         players[0].name = data.get("playerOne");
         players[1].name = data.get("playerTwo");
     }
