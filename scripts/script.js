@@ -32,10 +32,8 @@ const gameBoard = (() => {
         column--;
 
         // check if such a mark already exists
-        if (board[row][column] === mark) {
-            row++;
-            column++;
-            throw Error(`${mark} already exists at row ${row}, column ${column}`)
+        if (board[row][column] !== 0) {
+            throw Error(`A mark already exists at row ${row + 1}, column ${column + 1}`)
         }
 
         board[row][column] = mark;
@@ -160,8 +158,6 @@ const display = (() => {
 
     function showBoardCells () {
         const board = gameBoard.viewBoard();
-        console.log('rendering', board.slice());
-
         container.replaceChildren();;
 
         board.forEach((row, i) => {
