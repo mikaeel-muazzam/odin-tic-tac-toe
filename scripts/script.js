@@ -39,7 +39,6 @@ const gameBoard = (() => {
         }
 
         board[row][column] = mark;
-        console.log(board);
     }
 
     let board = generateEmptyBoard();
@@ -90,7 +89,6 @@ const game = (() => {
 
     // check for victory after every turn
     function checkWinState (boardArray) {
-        console.log(`checking victory on board with state: ${boardArray}`);
         //gameboard flattener
         function flatten (arr) {
             let flatArr = [];
@@ -144,7 +142,7 @@ const game = (() => {
     function announceWinner () {
         // announce the winner!!!
         if (winner) {
-            console.log(`The winner is ${players[checkTurn()-1].name} (${players[checkTurn()-1].marker})!`)
+            console.log(`The winner is ${players[checkTurn()+1].name} (${players[checkTurn()+1].marker})!`)
         } else {
             console.log(`It's a tie!`)
         }
@@ -162,7 +160,7 @@ const display = (() => {
 
     function showBoardCells () {
         const board = gameBoard.viewBoard();
-        console.log('rendering', board);
+        console.log('rendering', board.slice());
 
         container.replaceChildren();;
 
@@ -177,9 +175,20 @@ const display = (() => {
 
                 btn.className = "ttt-btn";
 
+                btn.addEventListener("click", clickHandler);
+
                 container.appendChild(btn);
             });
         });
+    }
+
+    function clickHandler (ev) {
+        const row = ev.target.dataset.row;
+        const column = ev.target.dataset.column;
+
+        game.playTurn(row, column);
+
+        showBoardCells();
     }
 
     return {showBoardCells};
